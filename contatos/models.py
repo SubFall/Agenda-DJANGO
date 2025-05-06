@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Categoria(models.Model):
     class Meta:
@@ -21,6 +22,10 @@ class Contato(models.Model):
     show = models.BooleanField(default=True)
     picture = models.ImageField(blank=True, upload_to='picture/%y/%m/')
     categoria = models.ForeignKey(Categoria, 
+                                  on_delete=models.SET_NULL, 
+                                  blank=True, 
+                                  null=True)
+    owner = models.ForeignKey(User, 
                                   on_delete=models.SET_NULL, 
                                   blank=True, 
                                   null=True)
