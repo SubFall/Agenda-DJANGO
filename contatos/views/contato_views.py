@@ -3,10 +3,11 @@ from contatos.models import Contato
 
 def index_view(request):
 
-    contatos = Contato.objects.all()
+    contatos = Contato.objects.filter(show=True).order_by('-id')
 
     context = {
-        'contatos': contatos
+        'contatos': contatos,
+        'titulo_contato' : 'Contato - '
     }
     return render(
         request,

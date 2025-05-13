@@ -1,7 +1,52 @@
 {% extends "global/base.html" %}
 
 {% block content %}
-    {% for contato in contatos %}
-        {{contato.first_name}} <br/>
-    {% endfor %}
+{% if contatos %}
+    <div class="responsive-table">
+        <table class="contacts-table">
+            <caption class="table-caption">
+                Contatos
+            </caption>
+
+            <thead>
+                <tr class="table-row table-row-header">
+                    <th class="table-header">ID</th>
+                    <th class="table-header">Primeiro Nome</th>
+                    <th class="table-header">Último Nome</th>
+                    <th class="table-header">Telefone</th>
+                    <th class="table-header">E-mail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contato in contatos %}
+                    <tr class="table-row">
+                        <td class="table-cel">
+                            <a href="{% url 'contatos:detail' contato.id %}" class="table-link">
+                                {{ contato.id }}
+                            </a>
+                        </td>
+                        <td class="table-cel">
+                            {{ contato.first_name }}
+                        </td>
+                        <td class="table-cel">
+                            {{ contato.last_name }}
+                        </td>
+                        <td class="table-cel">
+                            {{ contato.phone }}
+                        </td>
+                        <td class="table-cel">
+                            {{ contato.email }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="single-contact">
+        <h1 class="single-contact-name">
+            Nenhum contato encontrado
+        </h1>
+    </div>
+{% endif %}
 {% endblock content %}
