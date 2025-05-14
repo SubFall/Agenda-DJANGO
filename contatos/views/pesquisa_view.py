@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from contatos.models import Contato
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 def pesquisa_view(request):
 
@@ -19,11 +20,16 @@ def pesquisa_view(request):
                 Q(email__icontains=_get) 
         )\
         .order_by('-id')
+    
+    paginacao = Paginator(contatos, 10)
+    
+    page_number = request.GET.get('page')
+    page_obj = paginacao.get_page(page_number)
 
-    print(contatos.query)
+    #print(contatos.query)
 
     context = {
-        'contatos': contatos,
+        'page_obj': page_obj,
         'titulo_contato' : 'Contato - '
     }
     return render(
