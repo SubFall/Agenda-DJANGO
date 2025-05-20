@@ -9,5 +9,6 @@ urlpatterns = [
 
     #CRUD
     path('pesquisa/', views.pesquisa_view, name='pesquisa'),
+    path('contato/<int:id_contato>/update/', views.update, name='update'),
     path('contato/create/', views.create, name='create')
 ]
