@@ -10,5 +10,11 @@ urlpatterns = [
     #CRUD
     path('pesquisa/', views.pesquisa_view, name='pesquisa'),
     path('contato/<int:id_contato>/update/', views.update, name='update'),
-    path('contato/create/', views.create, name='create')
+    path('contato/<int:id_contato>/delete/', views.delete, name='delete'),
+    path('contato/create/', views.create, name='create'),
+
+    #User
+    path('user/create/', views.register, name='register'),
+    path('user/login/', views.login_user, name='login'),
+    path('user/logout/', views.logout_user, name='logout'),
 ]

@@ -11,7 +11,7 @@ def create(request):
     
     if request.method == 'POST':
         #print(request.POST['first_name'])
-        form = ContatoForm(request.POST)
+        form = ContatoForm(request.POST, request.FILES)
 
         context = {
             'form': form,
@@ -50,7 +50,7 @@ def update(request, id_contato):
     
     if request.method == 'POST':
         #print(request.POST['first_name'])
-        form = ContatoForm(request.POST, instance=contato)
+        form = ContatoForm(request.POST, request.FILES, instance=contato)
 
         context = {
             'form': form,
@@ -81,3 +81,27 @@ def update(request, id_contato):
         'contatos/create.html',
         context
     )
+
+
+def delete(request, id_contato):
+    print(f'delete: {request.method}')
+    contato = get_object_or_404(Contato, pk=id_contato)
+
+    confirmacao = request.POST.get('confirmacao', 'no')
+    
+    #print(confirmacao)
+
+    if confirmacao == 'yes':
+        contato.delete()
+        return redirect('contatos:index')
+
+    return render(
+        request,
+        'contatos/detalhes.html',
+        {
+            'contato': contato,
+            'confirmacao': confirmacao
+        }
+    )
+    
+    
