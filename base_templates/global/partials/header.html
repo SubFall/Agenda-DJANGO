@@ -7,31 +7,52 @@
 
         <nav class="menu">
             <ul class="menu-list">
-                <li class="menu-item">
-                    <a href="{% url "contatos:create" %}" class="menu-link">
-                        Criar Contato
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="" class="menu-link">
-                        Link 2
-                    </a>
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="menu-item">
+                        <a href="{% url "contatos:create" %}" class="menu-link">
+                            Criar Contato
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url "contatos:update_user" %}" class="menu-link">
+                            Atualizar Usuário
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url "contatos:logout" %}" class="menu-link">
+                            Sair
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="menu-item">
+                        <a href="{% url "contatos:login" %}" class="menu-link">
+                            Entrar
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{% url "contatos:register" %}" class="menu-link">
+                            Registrar
+                        </a>
+                    </li>
+                {% endif %}
+
             </ul>
         </nav>
 
         <div class="search">
-            <form 
-                action="{% url 'contatos:pesquisa' %}" 
-                method="GET">
-                <input 
-                    type="search" 
-                    class="search-input"
-                    placeholder="Search"
-                    id="search"
-                    name="q" 
-                    value= "{{ request.GET.q }}"
-                >
-            </form>
+            {% if user.is_authenticated %}
+                <form 
+                    action="{% url 'contatos:pesquisa' %}" 
+                    method="GET">
+                    <input 
+                        type="search" 
+                        class="search-input"
+                        placeholder="Search"
+                        id="search"
+                        name="q" 
+                        value= "{{ request.GET.q }}"
+                    >
+                </form>
+            {% endif %}
         </div>
     </header>
