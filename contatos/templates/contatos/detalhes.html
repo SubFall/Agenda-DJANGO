@@ -18,20 +18,21 @@
                 <img src="{{ contato.picture.url }}" alt="{{ contato.first_name }} {{ contato.last_name }}">
             </p>
         {% endif %}
-        <div class="contact-links">
-            <a class="btn btn-link" href="{% url 'contatos:update' contato.id %}">Atualizar</a>
+        {% if request.user == contato.owner %}
+            <div class="contact-links">
+                <a class="btn btn-link" href="{% url 'contatos:update' contato.id %}">Atualizar</a>
 
+                <form action="{% url 'contatos:delete' contato.id %}" method="POST">
+                    {% csrf_token %}
 
-            <form action="{% url 'contatos:delete' contato.id %}" method="POST">
-                {% csrf_token %}
-
-                {% if confirmacao == 'no' %}
-                    <input type="hidden" name="confirmacao" value="yes">
-                    <button class="btn btn-link btn-delete">Confirmar</button>
-                {% else %}
-                    <button class="btn btn-link btn-delete">Deletar</button>
-                {% endif %}
-            </form>
-        </div>
+                    {% if confirmacao == 'no' %}
+                        <input type="hidden" name="confirmacao" value="yes">
+                        <button class="btn btn-link btn-delete">Confirmar</button>
+                    {% else %}
+                        <button class="btn btn-link btn-delete">Deletar</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}

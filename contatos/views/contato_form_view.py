@@ -13,7 +13,6 @@ def create(request):
     if request.method == 'POST':
         #print(request.POST['first_name'])
         form = ContatoForm(request.POST, request.FILES)
-
         context = {
             'form': form,
             'form_action': form_action
@@ -21,7 +20,9 @@ def create(request):
 
         if form.is_valid():
             print(form.cleaned_data)
-            contato = form.save()
+            contato = form.save(commit=False)
+            contato.owner = request.user
+            contato = form.save(commit=True)
             return redirect('contatos:update', id_contato=contato.pk)
         
         return render(
@@ -35,7 +36,8 @@ def create(request):
     context = {
             #'contatos': contatos,
             'titulo_contato' : 'Contato - ',
-            'form': form
+            'form': form,
+            'titulo': 'Criar Contato'
         }
     return render(
         request,
@@ -46,7 +48,11 @@ def create(request):
 @login_required(login_url='contatos:login')
 def update(request, id_contato):
     print(f'update: {request.method}')
-    contato = get_object_or_404(Contato, pk=id_contato, show=True)
+    contato = get_object_or_404(Contato, 
+                                pk=id_contato, 
+                                show=True, 
+                                owner=request.user)
+    
     form_action = reverse('contatos:update', kwargs={'id_contato':id_contato})
     
     if request.method == 'POST':
@@ -75,7 +81,8 @@ def update(request, id_contato):
             #'contatos': contatos,
             'titulo_contato' : 'Contato - ',
             'form': form,
-            'form_action': form_action
+            'form_action': form_action,
+            'titulo': 'Editar Contato'
         }
     return render(
         request,
@@ -86,7 +93,10 @@ def update(request, id_contato):
 @login_required(login_url='contatos:login')
 def delete(request, id_contato):
     print(f'delete: {request.method}')
-    contato = get_object_or_404(Contato, pk=id_contato)
+    contato = get_object_or_404(Contato, 
+                                pk=id_contato, 
+                                show=True, 
+                                owner=request.user)
 
     confirmacao = request.POST.get('confirmacao', 'no')
     

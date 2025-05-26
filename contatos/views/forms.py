@@ -18,6 +18,7 @@ class ContatoForm(forms.ModelForm):
     )
 
     picture = forms.ImageField(
+        required=False,
         widget=forms.FileInput(
             attrs={
                 'class': 'form-control',
